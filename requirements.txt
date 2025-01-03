@@ -1,5 +1,9 @@
+paddlepaddle-gpu
 torch
 torchvision
+torchaudio
 transformers
-datasets
+paddleocr
+numpy
+pandas
 Pillow

@@ -19,7 +19,7 @@ def validate_model(model, dataloader, device="cuda"):
     print(f"Validation Loss: {average_loss}")
     return average_loss
 
-def train_model(model, train_dataloader, val_dataloader, num_epochs=5, learning_rate=5e-5, device="cuda", accumulation_steps=4):
+def train_model(model, train_dataloader, val_dataloader, num_epochs=5, learning_rate=5e-5, device="cuda", accumulation_steps=2):
     # Optymalizator
     optimizer = AdamW(model.parameters(), lr=learning_rate)
     model.to(device)
@@ -35,8 +35,7 @@ def train_model(model, train_dataloader, val_dataloader, num_epochs=5, learning_
 
             # Oblicz stratę
             outputs = model(pixel_values=pixel_values, labels=labels)
-            loss = outputs.loss
-            loss = loss / accumulation_steps  # Skalowanie straty dla akumulacji gradientów
+            loss = outputs.loss / accumulation_steps  # Skalowanie straty dla akumulacji gradientów
             total_loss += loss.item()
 
             # Backpropagation
