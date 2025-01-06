@@ -1,12 +1,12 @@
 from sklearn.model_selection import train_test_split
-from models.model import load_recognition_model
+from models.model import load_model_and_processor
 from preprocessing.data_loader import load_dataset, create_dataloader
 from training.trainer import train_model
 
 
 def main():
     # Załaduj model i procesor
-    model, processor = load_recognition_model()
+    model, processor = load_model_and_processor()
 
     # Załaduj dane treningowe
     data = load_dataset("data/labels.csv")
@@ -19,7 +19,7 @@ def main():
     val_dataloader = create_dataloader(val_data, processor, batch_size=4)
 
     # Trenuj model
-    train_model(model, train_dataloader, val_dataloader, num_epochs=5)
+    train_model(model, train_dataloader, val_dataloader, num_epochs=7)
 
     # Zapisz wytrenowany model
     model.save_pretrained("models/fine_tuned_trocr")

@@ -1,3 +1,4 @@
+from pathlib import Path
 from paddleocr import PaddleOCR
 from PIL import Image
 import os
@@ -39,7 +40,8 @@ def detect_text_regions_with_save(image_path, output_dir="output/regions", lang=
         x_max, y_max = max(box, key=lambda x: x[0])[0], max(box, key=lambda x: x[1])[1]
         cropped_image = image.crop((x_min, y_min, x_max, y_max))
 
+        filename = Path(image_path).name
         # Zapisz fragment jako obraz
-        cropped_image.save(os.path.join(output_dir, f"region_{idx+1}.png"))
+        cropped_image.save(os.path.join(output_dir, f"{filename}_{idx+1}.png"))
 
     return recognized_words

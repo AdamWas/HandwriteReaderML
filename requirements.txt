@@ -7,3 +7,6 @@ paddleocr
 numpy
 pandas
 Pillow
+sklearn
+dotenv
+openai

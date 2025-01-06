@@ -1,8 +1,8 @@
-from recognition_pipeline import process_image
+from pipelines.recognition_pipeline import process_image
 
 def main():
     # Ścieżka do obrazu, który chcesz przetworzyć
-    image_path = "data/images/test_image.jpg"
+    image_path = "data/test_image3.jpg"
     
     # Ścieżka do wytrenowanego modelu TrOCR
     model_dir = "models/fine_tuned_trocr"

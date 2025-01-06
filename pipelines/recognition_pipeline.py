@@ -23,16 +23,6 @@ def detect_text_regions(image_path):
     return text_regions
 
 
-# def extract_region(image_path, box):
-#     """
-#     Wycina fragment obrazu na podstawie współrzędnych.
-#     """
-#     image = Image.open(image_path)
-#     x_min, y_min = min(box, key=lambda x: x[0])[0], min(box, key=lambda x: x[1])[1]
-#     x_max, y_max = max(box, key=lambda x: x[0])[0], max(box, key=lambda x: x[1])[1]
-#     return image.crop((x_min, y_min, x_max, y_max))
-
-
 def extract_region(image_path, box):
     image = Image.open(image_path)
     x_min, y_min = min(box, key=lambda x: x[0])[0], min(box, key=lambda x: x[1])[1]
@@ -44,39 +34,28 @@ def extract_region(image_path, box):
     return cropped_image
 
 
-# def recognize_word(word_image, model, processor):
-#     """
-#     Rozpoznaje tekst w wyciętym fragmencie obrazu.
-#     """
-#     pixel_values = processor.feature_extractor(
-#         images=word_image, return_tensors="pt"
-#     ).pixel_values
-#     model.eval()
-#     with torch.no_grad():
-#         print("model.generate.")
-#         generated_ids = model.generate(pixel_values)
-#         print("Prcessing tokens.")
-#         recognized_text = processor.tokenizer.batch_decode(
-#             generated_ids, skip_special_tokens=True
-#         )[0]
-#     return recognized_text
 def recognize_word(word_image, model, processor):
-    pixel_values = processor.feature_extractor(images=word_image, return_tensors="pt").pixel_values
+    pixel_values = processor.feature_extractor(
+        images=word_image, return_tensors="pt"
+    ).pixel_values
     print(f"Pixel values shape: {pixel_values.shape}")  # Logowanie rozmiaru wejścia
 
     model.eval()
     with torch.no_grad():
         try:
             print("Generowanie id-ków")
-            generated_ids = model.generate(pixel_values, max_length=50)  # Ograniczenie do 50 tokenów)
+            generated_ids = model.generate(
+                pixel_values, max_length=50
+            )  # Ograniczenie do 50 tokenów)
         except Exception as e:
             print(f"Błąd podczas generowania tekstu: {e}")
             return ""
-        recognized_text = processor.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        recognized_text = processor.tokenizer.batch_decode(
+            generated_ids, skip_special_tokens=True
+        )[0]
         print("Zwracanie rozpoznanego tekstu")
 
     return recognized_text
-
 
 
 def process_image(image_path, model_dir="models/fine_tuned_trocr"):
